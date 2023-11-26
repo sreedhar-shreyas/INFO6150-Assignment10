@@ -1,10 +1,14 @@
 import { useState, useEffect }  from 'react'
+import { Container, Row, Col } from 'react-bootstrap';
 import ForecastWeatherCard from '../Cards/ForecastWeatherCard';
 import CurrentWeatherCard from '../Cards/CurrentWeatherCard';
-const apiKey = "a40a5e83ca510b6857fa68548fb1236a";
+import "../Styles/Styles.css";
+
+// const apiKey = "a40a5e83ca510b6857fa68548fb1236a";
+
 // const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=Boston&appid=a40a5e83ca510b6857fa68548fb1236a";
 
-function Hourlyforecast() {
+function DailyForecast() {
     const [currentWeatherData, setCurrentWeatherData] = useState(null);
     const [forecastWeatherData, setForecastWeatherData] = useState(null);
   
@@ -58,7 +62,7 @@ function Hourlyforecast() {
                icon: forecast.weather[0].icon,
              };
            } else {
-             // Update logic based on your needs
+             console.log("error from dailyforecast page")
            }
          });
 
@@ -70,7 +74,7 @@ function Hourlyforecast() {
        });
    };
   
-      // Hardcoded Boston's coordinates
+
       const bostonLatitude = 42.3601;
       const bostonLongitude = -71.0589;
   
@@ -78,38 +82,46 @@ function Hourlyforecast() {
     }, []);
 
     return (
-        <div>
+
+      <Container>
       {currentWeatherData && (
-        <CurrentWeatherCard
-          city={currentWeatherData.name}
-          image={currentWeatherData.weather[0].icon}
-          description={currentWeatherData.weather[0].description}
-          temp={Math.round(currentWeatherData.main.temp)}
-          feelsLike={Math.round(currentWeatherData.main.feels_like)}
-          humidity={currentWeatherData.main.humidity}
-          pressure={currentWeatherData.main.pressure}
-          wind={currentWeatherData.wind.speed}
-        />
+        <Row className="mt-4">
+          <Col>
+            <CurrentWeatherCard
+              city={currentWeatherData.name}
+              image={currentWeatherData.weather[0].icon}
+              description={currentWeatherData.weather[0].description}
+              temp={currentWeatherData.main.temp}
+              feelsLike={currentWeatherData.main.feels_like}
+              humidity={currentWeatherData.main.humidity}
+              pressure={currentWeatherData.main.pressure}
+              wind={currentWeatherData.wind.speed}
+            />
+          </Col>
+        </Row>
       )}
       {forecastWeatherData && (
-        <div className="extended-forecast">
-          <div className="content">
-            <h2>Weekly Fdfdfdfdforecast</h2>
-            <div className="ext-cards">
-            {Object.keys(forecastWeatherData).map((dayOfWeek, index) => (
-                <ForecastWeatherCard
-                  day={dayOfWeek}
-                  image={`http://openweathermap.org/img/w/${forecastWeatherData[dayOfWeek].icon}.png`}
-                  forecast={forecastWeatherData[dayOfWeek].description}
-                  max={Math.round(forecastWeatherData[dayOfWeek].temp_max)}
-                  min={Math.round(forecastWeatherData[dayOfWeek].temp_min)}
-                />
-              ))}
+        <Row className="mt-4">
+          <Col>
+            <div className="forecastmain">
+              <h2>Weekly Forecast</h2>
+              <div className="tcards">
+                {Object.keys(forecastWeatherData).map((dayOfWeek, index) => (
+                  <ForecastWeatherCard
+                    key={index} // Add a unique key prop
+                    day={dayOfWeek}
+                    image={`http://openweathermap.org/img/w/${forecastWeatherData[dayOfWeek].icon}.png`}
+                    forecast={forecastWeatherData[dayOfWeek].description}
+                    max={(forecastWeatherData[dayOfWeek].temp_max)}
+                    min={(forecastWeatherData[dayOfWeek].temp_min)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
       )}
-    </div>
+    </Container>
       );
 }
-export default Hourlyforecast
+export default DailyForecast

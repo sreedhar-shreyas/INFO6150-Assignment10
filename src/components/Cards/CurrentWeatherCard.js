@@ -1,67 +1,53 @@
-import { WiRaindrop, WiStrongWind, WiThermometerInternal, WiWindDeg } from "react-icons/wi";
+import { WiRaindrop, WiStrongWind, WiThermometerInternal } from "react-icons/wi";
+import { Card, Container, Row, Col } from 'react-bootstrap';
+import GetImage from '../GetImage';
 
-function WeatherEmoji({ description }) {
-    switch (description.toLowerCase()) {
-      case 'clear sky':
-        return '☀️';
-      case 'few clouds':
-        return '🌤️';
-      case 'scattered clouds':
-      case 'broken clouds':
-        return '☁️';
-      case 'shower rain':
-        return '🌧️';
-      case 'rain':
-        return '🌧️';
-      case 'thunderstorm':
-        return '⛈️';
-      case 'snow':
-        return '❄️';
-      default:
-        return '❓'; // You can replace this with a default emoji for unknown conditions
-    }
-  }
+// import test from "../../Images/."
+
 function CurrentWeatherCard(props) {
     return (
       <>
-        <div className="cards">
-          <div className="weather-card">
-            <div className="card-left">
-              <p>Current Weather</p>
-              <p>
-                <WiWindDeg/>
-                {props.city}
-                </p>
-             
-                {/* <img src={`http://openweathermap.org/img/w/${props.image}.png`} alt="Weather Icon"></img> */}
-                <h3>{props.temp} &deg;C</h3>
-              </div>
-              <div className="temp"> <span role="img" aria-label="Weather Emoji">
-                <WeatherEmoji description={props.description} />
-              </span>
-              <p>{props.description}</p>
-            </div>
-            <div className="card-right">
-              <p>
-                Feels Like <span>{props.feelsLike} &deg;C</span>
-              </p>
-              <p>
+        <Card fluid className="bg-light p-4">
+      <Container>
+        <Row>
+          <Col>
+            <h1> {props.city} Current Weather
+            </h1>
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col className="card-left">
+            <h1>{props.temp} &deg;C</h1>
+          </Col>
+          <Col className="temp">
+            <span role="img" aria-label="Weather Emoji">
+              <GetImage description={props.description} />
+            </span>
+            <p>{props.description}</p>
+          </Col>
+          <Col className="card-right">
+            <p>
+              Feels Like <span class="font-weight-bold">{props.feelsLike} &deg;C</span>
+            </p>
+            <p>
               <WiRaindrop />
-                Humidity <span>{props.humidity} %</span>
-              </p>
-              <p>
-                <WiStrongWind />
-                Wind <span>{props.wind} m/s</span>
-              </p>
-              <p>
-                <WiThermometerInternal />
-                Pressure <span>{props.pressure} hPa</span>
-              </p>
-            </div>
-          </div>
-        </div>
+              Humidity <span className="font-weight bold">{props.humidity} %</span>
+            </p>
+            <p className="font-weight bold">
+              <WiStrongWind />
+              Wind: <span className="font-weight bold">{props.wind} m/s</span>
+            </p>
+            <p>
+              <WiThermometerInternal />
+              Pressure <span className="font-weight bold" >{props.pressure} hPa</span>
+            </p>
+          </Col>
+        </Row>
+      </Container>
+    </Card>
       </>
     );
   }
+  
 
   export default CurrentWeatherCard;
